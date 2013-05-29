@@ -27,7 +27,7 @@ fun realRandomArray (xseed,yseed) n =
         loop (n - 1)
     end
 
-val a1 = realRandomArray (13,17) 100000
+val a1 = realRandomArray (13,17) 10000000
 
 val _ = ArraySort.sort Real.compare a1
 
