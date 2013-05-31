@@ -43,6 +43,7 @@ struct
     (* Blit FROM[I,K) to TO[J,?]. *)
 
     fun blit (from,i,k,to,j) =
+        (
         if not (i < k) then raise Subscript
         else (let
                   fun loop (i,j) =
@@ -56,7 +57,7 @@ struct
                       else ()
               in
                   loop (i,j)
-              end)
+              end))
 
 
 
@@ -116,35 +117,37 @@ struct
        in
            loop 1
        end
+
+       
     
 
-   (* Vector merge sort in the given range *)
+   (* Vector merge sort in the range [from,to) *)
    fun sortRange cmp (array,(from,to)) =
        let 
            val n = A.length array
            val _ = if not ((from >= 0) andalso (to <= n)) then raise Subscript else ()
-           val b = A.array (n, A.sub(array,0))
+           val b = A.array (to-from, A.sub(array,from))
 
            fun loop m =
                if (m < to)
                then (let 
-                         fun inner p =
+                         fun inner (p,bp) =
                              if p < (to-m)
                              then (let
                                        val q = p+m
                                        val r = Int.min (to, p + (2*m))
                                    in
-                                       (merge cmp (array,p,q,r,b,p);
-                                        blit (b,p,r,array,p);
-                                        inner (p + (2*m)))
+                                       (merge cmp (array,p,q,r,b,bp);
+                                        blit (b,bp,r-from,array,p);
+                                        inner (p + (2*m),bp + (2*m)))
                                    end)
                              else loop (2*m)
                      in
-                         inner 0
+                         inner (from,0)
                      end)
                else ()
        in
-           loop (from+1)
+           loop 1
        end
     
     

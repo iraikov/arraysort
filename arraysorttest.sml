@@ -27,11 +27,36 @@ fun realRandomArray (xseed,yseed) n =
         loop (n - 1)
     end
 
-val a1 = realRandomArray (13,17) 10000000
+val a5 = Real64Array.fromList [4.0, 3.0, 5.0]
+
+val _ = ArraySort.sort Real.compare a5
+val _ = if not (ArraySort.sorted Real.compare a5) 
+        then raise Fail "a5 merge sort failed" else ()
+
+val a4 = Real64Array.fromList [1.0, 2.0, 4.0, 3.0, 5.0]
+
+val _ = ArraySort.sortRange Real.compare (a4,(2,5))
+val _ = if not (ArraySort.sorted Real.compare a4) 
+        then raise Fail "a4 merge sort failed" else ()
+
+val a3 = Real64Array.fromList [1.0, 4.0, 2.0, 3.0, 0.0]
+
+val _ = ArraySort.sortRange Real.compare (a3,(0,5))
+val _ = if not (ArraySort.sorted Real.compare a3) 
+        then raise Fail "a3 merge sort failed" else ()
+
+val a2 = realRandomArray (13,17) 10000000
+
+val _ = ArraySort.sort Real.compare a2
+
+val _ = if not (ArraySort.sorted Real.compare a2) 
+        then raise Fail "a2 merge sort failed" else ()
+
+val a1 = Real64Array.fromList [1.0, 4.0, 2.0, 3.0, 0.0]
 
 val _ = ArraySort.sort Real.compare a1
 
 val _ = if not (ArraySort.sorted Real.compare a1) 
-        then raise Fail "merge sort failed" else ()
+        then raise Fail "a1 merge sort failed" else ()
 
 
