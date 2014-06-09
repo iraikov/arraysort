@@ -2,6 +2,15 @@
 
 structure ArraySort = ArrayMergeSortFn (Real64Array)
 
+fun timing (action) = 
+    let
+        val timer = Timer.startCPUTimer ()
+        val result = action ()
+        val times = Timer.checkCPUTimer timer
+    in
+        (result, Time.+ (#usr times, #sys times))
+    end
+
 fun putStrLn (file, str) = 
     (TextIO.output (file, str);
      TextIO.output (file, "\n"))
@@ -45,9 +54,11 @@ val _ = ArraySort.sortRange Real.compare (a3,(0,5))
 val _ = if not (ArraySort.sorted Real.compare a3) 
         then raise Fail "a3 merge sort failed" else ()
 
-val a2 = realRandomArray (13,17) 10000000
+val a2 = realRandomArray (13,17) 1000000
 
-val _ = ArraySort.sort Real.compare a2
+val (_,t) = timing (fn () => ArraySort.sort Real.compare a2)
+
+val _ = putStrLn (TextIO.stdOut, ("a2 merge sort took " ^ (Time.toString t) ^ " s"))
 
 val _ = if not (ArraySort.sorted Real.compare a2) 
         then raise Fail "a2 merge sort failed" else ()
